@@ -1,0 +1,73 @@
+table 'Credit Table'
+	lineageTag: 42cdbc32-47b3-4258-9738-b8139a027d88
+
+	column Cust_Id
+		dataType: int64
+		formatString: 0
+		lineageTag: 5ca895f1-1daf-472f-968d-b861d068eb67
+		summarizeBy: none
+		sourceColumn: Cust_Id
+
+		annotation SummarizationSetBy = Automatic
+
+	column Credit_Score
+		dataType: int64
+		formatString: 0
+		lineageTag: 5e2860f7-96e9-4363-8637-cf2d207ddeb9
+		summarizeBy: sum
+		sourceColumn: Credit_Score
+
+		annotation SummarizationSetBy = Automatic
+
+	column Credit_Utilisation
+		dataType: double
+		lineageTag: 23fa5147-17bc-48aa-89d8-b3117bef1c33
+		summarizeBy: sum
+		sourceColumn: Credit_Utilisation
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Outstanding_Debt
+		dataType: int64
+		formatString: 0
+		lineageTag: e149bbb5-5476-4d94-bfc8-b2984d93dce8
+		summarizeBy: sum
+		sourceColumn: Outstanding_Debt
+
+		annotation SummarizationSetBy = Automatic
+
+	column Credit_Inquiries_Last_6_Months
+		dataType: int64
+		formatString: 0
+		lineageTag: 509983dd-63ce-4823-8045-d75c357da076
+		summarizeBy: sum
+		sourceColumn: Credit_Inquiries_Last_6_Months
+
+		annotation SummarizationSetBy = Automatic
+
+	column Credit_Limit
+		dataType: int64
+		formatString: 0
+		lineageTag: 59fb57a2-1669-4754-827f-c577b26f4b07
+		summarizeBy: sum
+		sourceColumn: Credit_Limit
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Credit Table' = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("D:\Projects\Power BI\Project-1\Credit Profiles_C.xlsx"), null, true),
+				    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Cust_Id", Int64.Type}, {"Credit_Score", Int64.Type}, {"Credit_Utilisation", type number}, {"Outstanding_Debt", Int64.Type}, {"Credit_Inquiries_Last_6_Months", Int64.Type}, {"Credit_Limit", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	changedProperty = Name
+
+	annotation PBI_ResultType = Table
+

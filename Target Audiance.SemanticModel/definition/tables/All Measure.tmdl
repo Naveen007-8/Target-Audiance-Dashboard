@@ -1,0 +1,49 @@
+table 'All Measure'
+	lineageTag: 48626ff1-b759-4d50-a150-4a4fb2ef0891
+
+	measure 'Total Transaction Amount' = SUM('Transaction Table'[Tran_Amount])
+		lineageTag: 6c5be05d-850b-4ee7-ab9a-4e74123e42a2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Average Credit Score' = AVERAGE('Credit Table'[Credit_Score])
+		lineageTag: c0b4478f-160e-45b5-9d01-8263a4afbb51
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Average Credit Limit' = AVERAGE('Credit Table'[Credit_Limit])
+		lineageTag: aa76fbde-6838-4b96-954f-2e50e3636f9b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Customers' = DISTINCTCOUNT('Customer Table'[Cust_Id])
+		formatString: 0
+		lineageTag: f4746d79-5b85-4bdc-b1cd-ce4ec2eee4ac
+
+	measure 'Active Customer %' = DIVIDE(DISTINCTCOUNT('Transaction Table'[Cust_Id]),[Total Customers], 0)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 024508c6-3887-4ac5-bb47-5bdccef6fcb7
+
+	measure 'Transaction Per Customer' = DIVIDE([Total Transaction Amount],[Total Customers])
+		lineageTag: 274e377f-5d77-4e75-b4f8-c4962b88f1c3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Utilization Rate %' = DIVIDE(SUM('Credit Table'[Outstanding_Debt]),SUM('Credit Table'[Credit_Limit]), 0)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 722cd6b6-1279-4384-8547-e00375a73631
+
+	partition 'All Measure' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Column1"})
+				in
+				    #"Removed Columns"
+
+	changedProperty = Name
+
+	annotation PBI_ResultType = Table
+

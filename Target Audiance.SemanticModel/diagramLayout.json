@@ -1,0 +1,138 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 594.09835064997435,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 1136,
+            "y": 0
+          },
+          "nodeIndex": "Customer Table",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 7
+        },
+        {
+          "location": {
+            "x": 1591.420672862077,
+            "y": 0
+          },
+          "nodeIndex": "Credit Table",
+          "nodeLineageTag": "42cdbc32-47b3-4258-9738-b8139a027d88",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 200
+          },
+          "nodeIndex": "Gender Table",
+          "nodeLineageTag": "18259435-d51d-4768-b73d-cd40ca424762",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 284,
+            "y": 200
+          },
+          "nodeIndex": "Location Table",
+          "nodeLineageTag": "6ed6d93b-bb22-48d6-ac10-b9c24d72932d",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 568,
+            "y": 200
+          },
+          "nodeIndex": "Marial Status",
+          "nodeLineageTag": "78485bd9-1716-4572-a24c-36aa5b56e15a",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 852,
+            "y": 200
+          },
+          "nodeIndex": "Occupation Table",
+          "nodeLineageTag": "6eae9728-6c97-4f87-98c9-035bcef9e373",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 1399.9028741328048,
+            "y": 346.2814667988107
+          },
+          "nodeIndex": "Transaction Table",
+          "nodeLineageTag": "05889ce8-d34c-467c-a75b-a9a259cad222",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 8
+        },
+        {
+          "location": {
+            "x": 1895.1516352824581,
+            "y": 27.500495540138758
+          },
+          "nodeIndex": "All Measure",
+          "nodeLineageTag": "48626ff1-b759-4d50-a150-4a4fb2ef0891",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 1748.2041625371655,
+            "y": 356.9316154608523
+          },
+          "nodeIndex": "Calendar",
+          "nodeLineageTag": "61510cea-5f6f-4b63-b646-eb850e16c9df",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 9
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 61,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

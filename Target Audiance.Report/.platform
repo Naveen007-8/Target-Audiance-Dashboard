@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Target Audiance"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "373830f8-2cb7-4926-ab3a-2b9dcbd60242"
+  }
+}

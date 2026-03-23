@@ -1,0 +1,41 @@
+table 'Marial Status'
+	lineageTag: 78485bd9-1716-4572-a24c-36aa5b56e15a
+
+	column 'Marial ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: a53b9b06-c546-476d-aa94-cb0c365957bb
+		summarizeBy: none
+		sourceColumn: Marial ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Marital_Status
+		dataType: string
+		lineageTag: 385ef1f4-f287-4ce8-af53-be581aa1c048
+		summarizeBy: none
+		sourceColumn: Marital_Status
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Marial Status' = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("D:\Projects\Power BI\Project-1\Customers_C.xlsx"), null, true),
+				    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Cust_Id", Int64.Type}, {"First_Name", type text}, {"Last_Name", type text}, {"Gender", type text}, {"Age", Int64.Type}, {"Location", type text}, {"Occupation", type text}, {"Annual_Income", type number}, {"Marital_Status", type text}}),
+				    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each [Cust_Id] <> null and [Cust_Id] <> ""),
+				    #"Removed Other Columns" = Table.SelectColumns(#"Filtered Rows",{"Marital_Status"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns"),
+				    #"Added Index" = Table.AddIndexColumn(#"Removed Duplicates", "Index", 1, 1, Int64.Type),
+				    #"Reordered Columns" = Table.ReorderColumns(#"Added Index",{"Index", "Marital_Status"}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Reordered Columns",{{"Index", "Marial ID"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

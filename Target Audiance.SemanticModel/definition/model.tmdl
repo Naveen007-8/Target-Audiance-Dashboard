@@ -1,0 +1,28 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["Customer Table","Credit Table","Gender Table","Location Table","Occupation Table","Marial Status","All Measures","Transaction Table","All Measure"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table 'Customer Table'
+ref table 'Credit Table'
+ref table 'Gender Table'
+ref table 'Location Table'
+ref table 'Occupation Table'
+ref table 'Marial Status'
+ref table 'Transaction Table'
+ref table DateTableTemplate_a591a11f-b731-4609-bc8c-5b9186bf9ba2
+ref table 'All Measure'
+ref table Calendar
+ref table LocalDateTable_82c1ffb2-9b11-4a3b-8049-823de64f0239
+
+ref cultureInfo en-US
+

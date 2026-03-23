@@ -1,0 +1,31 @@
+relationship AutoDetected_47204eda-cac2-409d-9913-65aed0231887
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'Credit Table'.Cust_Id
+	toColumn: 'Customer Table'.Cust_Id
+
+relationship AutoDetected_2a61fc5f-024f-42f1-851c-c9f87f0e2a6d
+	fromColumn: 'Customer Table'.'Gender ID'
+	toColumn: 'Gender Table'.'Gender ID'
+
+relationship AutoDetected_5fe17598-d6a5-4ade-bc9f-479b2bc9e428
+	fromColumn: 'Customer Table'.'Occupation ID'
+	toColumn: 'Occupation Table'.'Occupation ID'
+
+relationship AutoDetected_20e4c65e-2624-41f4-a341-0e269b7b7ca8
+	fromColumn: 'Customer Table'.'Marial ID'
+	toColumn: 'Marial Status'.'Marial ID'
+
+relationship AutoDetected_93b3ddaf-a6a7-4a6d-a9d1-67cf6565248f
+	fromColumn: 'Transaction Table'.Cust_Id
+	toColumn: 'Customer Table'.Cust_Id
+
+relationship d741bc99-d80f-43dc-a16f-1dc65bab04d3
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Calendar.Date
+	toColumn: LocalDateTable_82c1ffb2-9b11-4a3b-8049-823de64f0239.Date
+
+relationship ddfb4279-ccfd-85f1-3bc0-31b66ba10dcf
+	fromColumn: 'Transaction Table'.Tran_Date
+	toColumn: Calendar.Date
+

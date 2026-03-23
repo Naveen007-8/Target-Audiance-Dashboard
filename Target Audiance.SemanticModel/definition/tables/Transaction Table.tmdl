@@ -1,0 +1,90 @@
+table 'Transaction Table'
+	lineageTag: 05889ce8-d34c-467c-a75b-a9a259cad222
+
+	column Tran_Id
+		dataType: int64
+		formatString: 0
+		lineageTag: a606e441-162c-46de-b00e-007562fb1b92
+		summarizeBy: count
+		sourceColumn: Tran_Id
+
+		annotation SummarizationSetBy = Automatic
+
+	column Cust_Id
+		dataType: int64
+		formatString: 0
+		lineageTag: 5df3c78c-c968-4e04-b6d2-6da6796479a4
+		summarizeBy: none
+		sourceColumn: Cust_Id
+
+		annotation SummarizationSetBy = Automatic
+
+	column Tran_Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: a5b4b247-da31-493e-9086-a13b2cf6e9b0
+		summarizeBy: none
+		sourceColumn: Tran_Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Tran_Amount
+		dataType: double
+		lineageTag: 7a685f29-171f-405b-bc24-5e327d57b016
+		summarizeBy: sum
+		sourceColumn: Tran_Amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Platform
+		dataType: string
+		lineageTag: 533dbed2-3215-41a4-af10-3ef1c06291bf
+		summarizeBy: none
+		sourceColumn: Platform
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_Category
+		dataType: string
+		lineageTag: e1cc7688-7671-45b9-b86e-654169ad65e9
+		summarizeBy: none
+		sourceColumn: Product_Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column Payment_Type
+		dataType: string
+		lineageTag: 1e435e6e-27b4-4e9b-96bb-4ebce786485e
+		summarizeBy: none
+		sourceColumn: Payment_Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Credit_Limit
+		dataType: int64
+		formatString: 0
+		lineageTag: a337426f-d72e-4792-bd13-0c294c13bb4a
+		summarizeBy: sum
+		sourceColumn: Credit_Limit
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Transaction Table' = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("D:\Projects\Power BI\Project-1\Transactions_C.xlsx"), null, true),
+				    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Tran_Id", Int64.Type}, {"Cust_Id", Int64.Type}, {"Tran_Date", type date}, {"Tran_Amount", type number}, {"Platform", type text}, {"Product_Category", type text}, {"Payment_Type", type text}, {"Credit_Limit", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	changedProperty = Name
+
+	annotation PBI_ResultType = Table
+

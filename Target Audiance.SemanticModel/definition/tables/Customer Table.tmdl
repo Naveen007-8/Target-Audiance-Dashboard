@@ -1,0 +1,108 @@
+table 'Customer Table'
+	lineageTag: 88d81856-e58f-40be-b797-77b3ec0fef3f
+
+	column Cust_Id
+		dataType: int64
+		formatString: 0
+		lineageTag: 878cf062-fe1a-47e7-8f9e-569d54a36cda
+		summarizeBy: none
+		sourceColumn: Cust_Id
+
+		annotation SummarizationSetBy = Automatic
+
+	column First_Name
+		dataType: string
+		lineageTag: cdee3340-cc28-49a8-a388-74dc9ce1b683
+		summarizeBy: none
+		sourceColumn: First_Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Last_Name
+		dataType: string
+		lineageTag: 0e5d0b85-9fb3-4d4e-9474-d824795089fb
+		summarizeBy: none
+		sourceColumn: Last_Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Age
+		dataType: int64
+		formatString: 0
+		lineageTag: b7d9d63c-c45e-497f-958f-bc1c7a016ed4
+		summarizeBy: sum
+		sourceColumn: Age
+
+		annotation SummarizationSetBy = Automatic
+
+	column Annual_Income
+		dataType: double
+		lineageTag: 8f105cc2-7e5c-47a2-9572-f1da6c493230
+		summarizeBy: sum
+		sourceColumn: Annual_Income
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Gender ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 02e7ef9e-1bdd-4734-aa16-81ab49e2b070
+		summarizeBy: none
+		sourceColumn: Gender ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Occupation ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: a960cc46-aa52-4068-b3f6-944ebd2c08f0
+		summarizeBy: none
+		sourceColumn: Occupation ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Marial ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 047cb32e-821e-48e4-9080-df5c29922181
+		summarizeBy: none
+		sourceColumn: Marial ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Age Category' = SWITCH(TRUE(),'Customer Table'[Age]<25,"18-25",'Customer Table'[Age]<35,"25-35",'Customer Table'[Age]<45,"35-45","45+")
+		lineageTag: ce8c80a5-3ebc-48c0-84f7-f38297ec5c25
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Customer Table' = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("D:\Projects\Power BI\Project-1\Customers_C.xlsx"), null, true),
+				    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Cust_Id", Int64.Type}, {"First_Name", type text}, {"Last_Name", type text}, {"Gender", type text}, {"Age", Int64.Type}, {"Location", type text}, {"Occupation", type text}, {"Annual_Income", type number}, {"Marital_Status", type text}}),
+				    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each [Cust_Id] <> null and [Cust_Id] <> ""),
+				    #"Merged Queries" = Table.NestedJoin(#"Filtered Rows", {"Gender"}, #"Gender Table", {"Gender"}, "Gender Table", JoinKind.LeftOuter),
+				    #"Expanded Gender Table" = Table.ExpandTableColumn(#"Merged Queries", "Gender Table", {"Gender ID"}, {"Gender Table.Gender ID"}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Expanded Gender Table",{"Gender Table.Gender ID"}),
+				    #"Merged Queries1" = Table.NestedJoin(#"Removed Columns", {"Gender"}, #"Gender Table", {"Gender"}, "Gender Table", JoinKind.LeftOuter),
+				    #"Expanded Gender Table1" = Table.ExpandTableColumn(#"Merged Queries1", "Gender Table", {"Gender ID"}, {"Gender ID"}),
+				    #"Merged Queries2" = Table.NestedJoin(#"Expanded Gender Table1", {"Occupation"}, #"Occupation Table", {"Occupation"}, "Occupation Table", JoinKind.LeftOuter),
+				    #"Expanded Occupation Table" = Table.ExpandTableColumn(#"Merged Queries2", "Occupation Table", {"Occupation ID"}, {"Occupation ID"}),
+				    #"Merged Queries3" = Table.NestedJoin(#"Expanded Occupation Table", {"Marital_Status"}, #"Marial Status", {"Marital_Status"}, "Marial Status", JoinKind.LeftOuter),
+				    #"Expanded Marial Status" = Table.ExpandTableColumn(#"Merged Queries3", "Marial Status", {"Marial ID"}, {"Marial ID"}),
+				    #"Merged Queries4" = Table.NestedJoin(#"Expanded Marial Status", {"Occupation"}, #"Occupation Table", {"Occupation"}, "Occupation Table", JoinKind.LeftOuter),
+				    #"Expanded Occupation Table1" = Table.ExpandTableColumn(#"Merged Queries4", "Occupation Table", {"Occupation ID"}, {"Occupation ID.1"}),
+				    #"Removed Columns1" = Table.RemoveColumns(#"Expanded Occupation Table1",{"Location", "Occupation", "Marital_Status", "Occupation ID.1", "Gender"})
+				in
+				    #"Removed Columns1"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+
